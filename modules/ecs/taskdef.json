@@ -1,0 +1,38 @@
+[
+    {
+        "name": "${container_name}",
+        "image": "${image_repository_url}:${image_tag}",
+        "cpu": 256,
+        "memory": 512,
+        "portMappings": [
+            {
+                "name": "${container_name}-3000-tcp",
+                "containerPort": 3000,
+                "hostPort": 3000,
+                "protocol": "tcp",
+                "appProtocol": "http"
+            }
+        ],
+        "essential": true,
+        "environment": [
+            {
+                "name": "TZ",
+                "value": "${tz}"
+            }
+        ],
+        "secrets": [],
+        "environmentFiles": [],
+        "mountPoints": [],
+        "volumesFrom": [],
+        "ulimits": [],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/ecs/${resource_name}",
+                "awslogs-region": "${region}",
+                "awslogs-stream-prefix": "ecs"
+            },
+            "secretOptions": []
+        }
+    }
+]
