@@ -3,8 +3,8 @@ resource "aws_iam_role" "deploy" {
 
   assume_role_policy = data.aws_iam_policy_document.assume_role_deploy.json
   inline_policy {
-    name   = "ecr-push-image"
-    policy = data.aws_iam_policy_document.deploy_ecr.json
+    name   = "ecs-deploy"
+    policy = data.aws_iam_policy_document.deploy_ecs.json
   }
 }
 
@@ -35,7 +35,7 @@ data "aws_iam_policy_document" "assume_role_deploy" {
   }
 }
 
-data "aws_iam_policy_document" "deploy_ecr" {
+data "aws_iam_policy_document" "deploy_ecs" {
   statement {
     actions   = ["ecr:GetAuthorizationToken"]
     effect    = "Allow"
@@ -53,6 +53,40 @@ data "aws_iam_policy_document" "deploy_ecr" {
     effect = "Allow"
     resources = [
       aws_ecr_repository.app.arn
+    ]
+  }
+
+  statement {
+    actions = [
+      "ecs:DescribeTaskDefinition",
+      "ecs:ListTaskDefinitions",
+      "ecs:RegisterTaskDefinition",
+    ]
+    effect = "Allow"
+    resources = [
+      "*"
+    ]
+  }
+
+  statement {
+    actions = [
+      "iam:PassRole",
+    ]
+    effect = "Allow"
+    resources = [
+      module.ecs.ecs_execution_role_arn,
+      module.ecs.ecs_task_role_arn,
+    ]
+  }
+
+  statement {
+    actions = [
+      "ecs:UpdateService",
+      "ecs:DescribeServices",
+    ]
+    effect = "Allow"
+    resources = [
+      module.ecs.ecs_service_id,
     ]
   }
 }
