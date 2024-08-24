@@ -1,7 +1,7 @@
 [
     {
         "name": "${container_name}",
-        "image": "${image_repository_url}:${image_tag}",
+        "image": "${image_repository_url}:release",
         "cpu": 256,
         "memory": 512,
         "portMappings": [

@@ -9,8 +9,7 @@ resource "aws_ecs_task_definition" "app" {
   container_definitions = templatefile("${path.module}/taskdef.json", {
     "resource_name"        = local.resource_name
     "container_name"       = local.container_name_app
-    "image_repository_url" = data.aws_ecr_repository.app.repository_url,
-    "image_tag"            = "deploy"
+    "image_repository_url" = data.aws_ecr_repository.app.repository_url
     "tz"                   = "Asia/Tokyo"
     "region"               = var.region
   })
