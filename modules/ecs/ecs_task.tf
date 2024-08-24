@@ -19,6 +19,9 @@ resource "aws_ecs_task_definition" "app" {
   }
   execution_role_arn = aws_iam_role.ecs_execution.arn
   task_role_arn      = aws_iam_role.task.arn
+  lifecycle {
+    ignore_changes = ["container_definitions"]
+  }
 }
 
 resource "aws_iam_role" "ecs_execution" {

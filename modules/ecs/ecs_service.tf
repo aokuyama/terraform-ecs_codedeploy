@@ -22,9 +22,6 @@ resource "aws_ecs_service" "app" {
     ]
     subnets = var.subnet_ids
   }
-  lifecycle {
-    ignore_changes = ["task_definition"]
-  }
 }
 
 resource "aws_security_group" "ecs" {
